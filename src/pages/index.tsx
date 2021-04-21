@@ -1,5 +1,3 @@
-import { Header } from '../components/Header';
-
 export default function Home(): JSX.Element {
-  return <Header />;
+  return <h1>Index</h1>;
 }
