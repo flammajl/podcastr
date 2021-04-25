@@ -40,4 +40,4 @@ $ yarn dev | npm run dev
 
 ## 📝 Licença
 
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo de [LICENÇA](https://github.com/flammajl/ignite-ignews/blob/main/LICENSE) para detalhes.
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo de [LICENÇA](https://github.com/flammajl/podcastr/blob/main/LICENSE) para detalhes.
