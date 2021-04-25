@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import Head from 'next/head';
 import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 import styles from './episode.module.scss';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 interface Episode {
   id: string;
@@ -13,7 +15,8 @@ interface Episode {
   members: string;
   thumbnail: string;
   file: {
-    duration: string;
+    duration: number;
+    durationAsString: string;
     url: string;
   };
   description: string;
@@ -25,8 +28,12 @@ interface EpisodeProps {
 }
 
 export default function Episode({ episode }: EpisodeProps): JSX.Element {
+  const { play } = usePlayer();
   return (
     <div className={styles.episode}>
+      <Head>
+        <title>{`${episode.title} | Podcastr`}</title>
+      </Head>
       <div className={styles.thumbnailContainer}>
         <button type="button">
           <Link href="/">
@@ -41,7 +48,7 @@ export default function Episode({ episode }: EpisodeProps): JSX.Element {
           src={episode.thumbnail}
           objectFit="cover"
         />
-        <button type="button">
+        <button type="button" onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
       </div>
@@ -50,7 +57,7 @@ export default function Episode({ episode }: EpisodeProps): JSX.Element {
         <h1>{episode.title}</h1>
         <span>{episode.members}</span>
         <span>{episode.publishedAt}</span>
-        <span>{episode.file.duration}</span>
+        <span>{episode.file.durationAsString}</span>
       </header>
 
       <div
@@ -93,7 +100,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     description: data.description,
     file: {
       url: data.file.url,
-      duration: convertDurationToTimeString(Number(data.file.duration)),
+      duration: data.file.duration,
+      durationAsString: convertDurationToTimeString(Number(data.file.duration)),
     },
   };
 
